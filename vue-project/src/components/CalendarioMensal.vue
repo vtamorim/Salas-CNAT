@@ -270,7 +270,7 @@ function formatarData(data: string) {
   border-radius: 18px;
   max-width: 1100px;
   margin: 34px auto;
-
+  width: 100%;
   flex-wrap: nowrap;
   justify-content: space-between;
 }

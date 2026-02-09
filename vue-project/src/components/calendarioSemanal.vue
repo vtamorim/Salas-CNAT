@@ -298,7 +298,8 @@ const eventosLista = computed(() => filtrarEventos(eventos.value))
   background: #ffffff;
   padding: 0px;
   border-radius: 20px;
-  max-width: 1400px;
+  max-width: 1200px;
+  width: 100%;
   max-height: 800px;
   margin: 0 auto;
   display: flex;

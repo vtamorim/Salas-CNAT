@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import calendarioSemanal from './components/calendarioSemanal.vue';
-
 import Header from './components/header.vue';
-
-import apresentacao from './components/apresentacao.vue';
+import Footer from './components/footer.vue';
 </script>
 
 <template>
-  <div>
+  <div class="layout-container">
     <Header/>
-    <apresentacao/>
-    <calendarioSemanal />
+    
+    <router-view />
+
+    <Footer/> 
   </div>
 </template>
 
-<style>
-*{
-
-  margin:0;
-  padding:0;
+<style scoped>
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; 
+  margin: 0 auto;
+  min-height: 100vh; /* Garante que o footer vá para baixo se a página for curta */
 }
 </style>
