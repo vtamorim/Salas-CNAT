@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="header-inner">
-            <a href="#home" class="logo-link">
+            <a href="" class="logo-link">
             <img :src="Logotipo" alt="Logo" />
             </a>
    

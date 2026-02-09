@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Importe os componentes que são exclusivos da Home aqui
-import apresentacao from '../components/apresentacao.vue';
+import apresentacao from '../components/apresentacaohome.vue';
 import calendarioSemanal from '../components/calendarioSemanal.vue';
 import CalendarioMensal from '../components/CalendarioMensal.vue';
 </script>
