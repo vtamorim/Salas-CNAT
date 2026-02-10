@@ -2,14 +2,20 @@
 import apresentacaopage from '@/components/apresentacaopage.vue';
 import apr_laboratorio from '@/assets/apr_laboratorio.png';
 import objetivos from '@/components/objetivos.vue';
+
+import Experiment from '@/assets/Experiment.png';
+import Detective from '@/assets/Detective.png';
+import Training from '@/assets/Training.png';
 </script>
 
 <template>
   <apresentacaopage :url="apr_laboratorio" descricao="  Os laboratórios do IFRN são espaços projetados para a realização de aulas práticas e a realização de trabalhos de conclusão de curso, projetos de pesquisa e extensão.
+
     Eles desempenham um papel fundamental na formação dos estudantes, permitindo que eles vivenciem a ciência de forma concreta e desenvolvam habilidades como observação, interpretação de resultados e trabalho em equipe.  
+
    A Coordenação de Laboratórios (Colab) é responsável pela gestão e coordenação dos laboratórios, garantindo que estejam em conformidade com as normas e regulamentos de segurança e funcionamento." />
   
-  <objetivos :titulos="['Promover a excelência acadêmica', 'Fomentar a pesquisa e inovação', 'Desenvolver competências técnicas']" :descricoes="['Promover a excelência acadêmica através de práticas pedagógicas inovadoras e rigorosas.', 'Fomentar a pesquisa e inovação ao incentivar projetos de pesquisa e extensão.', 'Desenvolver competências técnicas essenciais para o desenvolvimento profissional dos estudantes.']" :urls="['https://via.placeholder.com/300x200?text=Objetivo+1', 'https://via.placeholder.com/300x200?text=Objetivo+2', 'https://via.placeholder.com/300x200?text=Objetivo+3']"/>
+  <objetivos :titulos="['Prática', 'Experiência', 'Preparação']" :descricoes="['O laboratório possibilita que os alunos realizem experimentos e atividades práticas, facilitando a compreensão dos conteúdos teóricos trabalhados em sala de aula.', 'Por meio de experiências, os estudantes desenvolvem o pensamento científico, aprendendo a observar, formular hipóteses, testar ideias e analisar resultados.', 'O uso do laboratório contribui para a formação acadêmica e profissional dos alunos, promovendo contato com equipamentos, normas de segurança e trabalho em equipe.']" :urls="[Experiment, Detective, Training]"/>
 
  
    <section id="laboratorios" class="laboratorios-section">

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import Header from '@/components/header.vue';
-import Footer from '@/components/footer.vue';
 
 </script>
 
 <template>
+
+
  <section id="laboratorios" class="laboratorios-section">
     <div class="content-wrapper">
       <h3>Quadras</h3>

@@ -64,6 +64,22 @@ div {
   height: 400px;
   gap: 50px;
 }
+div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+div h3 {
+  color: #3A7259;
+  font-size: 24px;
+  margin: 0;
+}
+div p {
+  color: #02402E;
+  font-size: 16px;
+  margin: 0;
+}
 figure{
   margin: 0;
   padding: 0;

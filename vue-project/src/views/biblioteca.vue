@@ -1,11 +1,22 @@
 <script setup lang="ts">
+import apresentacaopage from '@/components/apresentacaopage.vue';
+import apr_biblioteca from '@/assets/apr_biblioteca.png';
+import objetivos from '@/components/objetivos.vue';
 
-import Header from '@/components/header.vue';
-import Footer from '@/components/footer.vue';
+import Reading from '@/assets/Reading.png';
+import educacao from '@/assets/educacao.png';
+import aprender from '@/assets/aprender.png';
 
 </script>
 
 <template>
+  <apresentacaopage :url="apr_biblioteca" descricao=" As bibliotecas do IFRN CNAT (Campus Natal-Central) são espaços acadêmicos destinados a apoiar estudantes, professores, pesquisadores e funcionários nas atividades de estudo, pesquisa e extensão.
+  
+  Elas funcionam como centros de informação, conhecimento e cultura dentro do Instituto Federal do Rio Grande do Norte (IFRN), oferecendo acervo físico e acesso a recursos digitais para o desenvolvimento acadêmico.." />
+  
+  <objetivos :titulos="['Prática', 'Experiência', 'Preparação']" :descricoes="['O laboratório possibilita que os alunos realizem experimentos e atividades práticas, facilitando a compreensão dos conteúdos teóricos trabalhados em sala de aula.', 'Por meio de experiências, os estudantes desenvolvem o pensamento científico, aprendendo a observar, formular hipóteses, testar ideias e analisar resultados.', 'O uso do laboratório contribui para a formação acadêmica e profissional dos alunos, promovendo contato com equipamentos, normas de segurança e trabalho em equipe.']" :urls="[aprender, educacao, Reading]"/>
+
+
   <section id="laboratorios" class="laboratorios-section">
     <div class="content-wrapper">
       <h3>Bibliotecas</h3>

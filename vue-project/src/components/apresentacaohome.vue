@@ -37,7 +37,7 @@
   height: auto;      /* deixa crescer */
         padding: 4rem 2rem;
         background-image: url('@/assets/fundo_apresentacao.png');
-        background-size:100% 100%;
+        background-size:100vw 100%;
         background-position: center;
         background-repeat: no-repeat;
         box-sizing: border-box;
@@ -49,6 +49,9 @@
             flex-direction: column;
             gap: 1.5rem;
         }
+    }
+    section::before{
+        background-size: 100vw 100%;
     }
 
     iframe {
