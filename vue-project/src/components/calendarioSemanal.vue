@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-
-
+import { ref, computed, onMounted } from 'vue'
 import iconLista from '@/assets/iconLista.png'
 import iconCalendario from '@/assets/iconCalendario.png'
 import iconLocal from '@/assets/iconLocal.png'
 import iconHorario from '@/assets/iconHorario.png'
-
 
 type ModoVisualizacao = 'hoje' | 'semana'
 type TipoVisualizacao = 'calendario' | 'lista'
@@ -15,33 +12,14 @@ interface Evento {
   titulo: string
   dataInscricaoInicio?: string
   dataInscricaoFim?: string
-  dataEventoInicio?: string
+  dataEventoInicio: string 
   dataEventoFim: string
   categorias: string[]
   local: string
 }
 
 
-const eventos = ref<Evento[]>([
-  {
-    titulo: 'Feira de Ciências',
-    dataInscricaoInicio: '2026-12-25T14:30:00.000Z',
-    dataInscricaoFim: '2026-01-10T23:59:00.000Z',
-    dataEventoInicio: '2026-01-15T09:00:00.000Z',
-    dataEventoFim: '2026-01-15T18:00:00.000Z',
-    categorias: ['Ciência', 'Educação'],
-    local: 'Auditório Principal',
-  },
-  {
-    titulo: 'Oficina de Robótica',
-    dataInscricaoInicio: '2026-01-05T08:00:00.000Z',
-    dataInscricaoFim: '2026-01-20T18:00:00.000Z',
-    dataEventoInicio: '2026-01-25T14:00:00.000Z',
-    dataEventoFim: '2026-01-29T16:00:00.000Z',
-    categorias: ['Tecnologia', 'Educação'],
-    local: 'Laboratório de Informática',
-  },
-])
+const eventos = ref<Evento[]>([])
 
 const hoje = new Date()
 const modoVisualizacao = ref<ModoVisualizacao>('semana')
@@ -49,10 +27,44 @@ const tipoVisualizacao = ref<TipoVisualizacao>('calendario')
 const categoriaSelecionada = ref('Todas')
 const dataBaseAgenda = ref(new Date(hoje))
 
-
 const fmtData = new Intl.DateTimeFormat('pt-BR')
 const fmtHora = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' })
 const fmtMesAno = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' })
+
+onMounted(() => {
+  const dadosSalvos = localStorage.getItem('lab_reservas')
+  
+  if (dadosSalvos) {
+    try {
+      const reservas = JSON.parse(dadosSalvos)
+      
+     
+      eventos.value = reservas.map((reserva: any) => {
+       
+        const [horaInicio, horaFim] = reserva.horario ? reserva.horario.split(' - ') : ['00:00', '00:00']
+        
+      
+        const inicioISO = `${reserva.data}T${horaInicio}:00`
+        const fimISO = `${reserva.data}T${horaFim}:00`
+
+    
+        const catPrincipal = reserva.lab ? reserva.lab.split(' ')[0] : 'Geral'
+
+        return {
+        
+          titulo: 'Reservado', 
+          local: reserva.lab,
+          categorias: ['Reservas', catPrincipal],
+          dataEventoInicio: inicioISO,
+          dataEventoFim: fimISO
+        } as Evento
+      })
+    } catch (e) {
+      console.error("Erro ao carregar reservas:", e)
+    }
+  }
+})
+
 
 
 const separarDataHora = (dataISO?: string) => {
@@ -74,7 +86,6 @@ const estaNoIntervalo = (dia: Date, inicioISO?: string, fimISO?: string) => {
   return d >= start && d <= end
 }
 
-
 const alterarSemana = (dias: number) => {
   const novaData = new Date(dataBaseAgenda.value)
   novaData.setDate(novaData.getDate() + dias)
@@ -83,10 +94,9 @@ const alterarSemana = (dias: number) => {
 const semanaAnterior = () => alterarSemana(-7)
 const proximaSemana = () => alterarSemana(7)
 
-
 const diasSemana = computed(() => {
   const inicio = new Date(dataBaseAgenda.value)
-  inicio.setDate(inicio.getDate() - inicio.getDay()) // Ajusta para domingo
+  inicio.setDate(inicio.getDate() - inicio.getDay())
 
   return Array.from({ length: 7 }, (_, i) => {
     const d = new Date(inicio)
@@ -104,19 +114,14 @@ const mesAnoAtual = computed(() => {
   return texto.charAt(0).toUpperCase() + texto.slice(1)
 })
 
-
-
-
 const categorias = computed(() => {
-  
   const todas = eventos.value.flatMap((e) => e.categorias || [])
-  
-  // 'Array.from' é mais compatível com TypeScript do que [...new Set]
   return ['Todas', ...Array.from(new Set(todas))]
 })
 
-const getPrimeiraCategoria = (listaCategorias: string[]) => {
-  return listaCategorias?.[0] ?? 'Geral'
+const getPrimeiraCategoria = (listaCategorias?: string[]) => {
+  if (!listaCategorias || listaCategorias.length === 0) return 'Geral'
+  return listaCategorias.length > 1 ? listaCategorias[1] : listaCategorias[0]
 }
 
 const coresCategorias = computed<Record<string, string>>(() => {
@@ -125,28 +130,34 @@ const coresCategorias = computed<Record<string, string>>(() => {
 
   return Object.fromEntries(
     catsUnicas.map((c, i) => {
-      const cor = c === 'Geral' 
-        ? 'hsl(210, 15%, 60%)' 
-        : `hsl(145, 45%, ${78 - (i % 5) * 6}%)`
+      const hue = (i * 137.508) % 360 
+      const cor = c === 'Reservas' 
+        ? '#6c757d' 
+        : `hsl(${hue}, 60%, 65%)`
 
       return [c, cor]
     }),
   )
 })
 
+const getCorPeloEvento = (evento: Evento) => {
+  const listaCats = evento.categorias || []
+  const cat = getPrimeiraCategoria(listaCats)
+  return coresCategorias.value[cat] || '#95a5a6'
+}
+
+
 const filtrarEventos = (eventosLista: Evento[], filtroDia?: Date) => {
   return eventosLista.filter(e => {
- 
-    if (categoriaSelecionada.value !== 'Todas' && !e.categorias.includes(categoriaSelecionada.value)) {
-      return false
+    if (categoriaSelecionada.value !== 'Todas') {
+       if (!e.categorias || !e.categorias.includes(categoriaSelecionada.value)) {
+         return false
+       }
     }
 
-
     if (filtroDia) {
-     
       return estaNoIntervalo(filtroDia, e.dataEventoInicio, e.dataEventoFim)
     } else {
-
       if (modoVisualizacao.value === 'hoje') {
         return estaNoIntervalo(hoje, e.dataEventoInicio, e.dataEventoFim)
       } else {
@@ -156,12 +167,10 @@ const filtrarEventos = (eventosLista: Evento[], filtroDia?: Date) => {
   })
 }
 
-
 const eventosFiltrados = (dia: Date) => {
   return filtrarEventos(eventos.value, dia)
     .sort((a, b) => (a.dataEventoInicio || '').localeCompare(b.dataEventoInicio || ''))
 }
-
 
 const eventosLista = computed(() => filtrarEventos(eventos.value))
 
@@ -237,7 +246,7 @@ const eventosLista = computed(() => filtrarEventos(eventos.value))
         <div v-if="tipoVisualizacao === 'lista'" class="lista">
           <div
             v-for="evento in eventos"
-            :key="evento.titulo + evento.dataEventoInicio + evento.dataEventoFim"
+            :key="evento.local + evento.dataEventoInicio + evento.dataEventoFim"
             class="item-lista"
           >
             <div class="badge">{{ evento.titulo }}</div>
@@ -262,9 +271,9 @@ const eventosLista = computed(() => filtrarEventos(eventos.value))
               >
                 <div
                   v-for="evento in eventosFiltrados(dia)"
-                  :key="evento.titulo + evento.dataEventoInicio"
+                  :key="evento.local + evento.dataEventoInicio"
                   class="evento-simples"
-                  :style="{ background: coresCategorias[getPrimeiraCategoria(evento.categorias)] }"
+                  :style="{ background: getCorPeloEvento(evento) }" 
                 >
                   <div class="evento-header">
                     <strong class="titulo-evento">{{ evento.titulo }}</strong>

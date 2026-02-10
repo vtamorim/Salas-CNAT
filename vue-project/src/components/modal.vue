@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
-// Definição das Props
 const props = defineProps<{
   show: boolean
   content: any 

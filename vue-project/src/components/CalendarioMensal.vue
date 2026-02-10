@@ -10,34 +10,39 @@ interface Evento {
 
 const eventos = ref<Evento[]>([])
 
+
 onMounted(() => {
-  eventos.value = [
-    {
-      id: 1,
-      nome: 'Evento alusivo ao dia do professor de geografia',
-      dataInicio: '2025-12-09',
-      dataFim: '2025-12-11',
-    },
-    {
-      id: 2,
-      nome: 'Palestra de conscientização ambiental 2025.2',
-      dataInicio: '2025-12-11',
-      dataFim: '2025-12-13',
-    },
-    {
-      id: 3,
-      nome: 'Palestra de tecnologia 2025.2',
-      dataInicio: '2025-12-10',
-      dataFim: '2025-12-15',
-    },
-    {
-      id: 4,
-      nome: 'FERIAS',
-      dataInicio: '2026-01-02',
-      dataFim: '2026-01-20',
-    },
-  ]
+  const dadosSalvos = localStorage.getItem('lab_reservas')
+
+  if (dadosSalvos) {
+    try {
+      const reservas = JSON.parse(dadosSalvos)
+
+      eventos.value = reservas.map((reserva: any, index: number) => {
+  
+        const descricao = ` ${reserva.lab} reservado para fins de ${reserva.motivo}`
+
+        return {
+          id: index,
+          nome: descricao,
+          dataInicio: reserva.data, 
+          dataFim: reserva.data,
+        }
+      })
+    } catch (e) {
+      console.error("Erro ao carregar reservas para o calendário:", e)
+      eventos.value = []
+    }
+  } else {
+
+    eventos.value = []
+  }
+  
+
+  verificarTela()
+  window.addEventListener('resize', verificarTela)
 })
+
 
 const hoje = new Date()
 const dataBase = ref(new Date(hoje.getFullYear(), hoje.getMonth()))
@@ -47,11 +52,6 @@ const isMobile = ref(false)
 function verificarTela() {
   isMobile.value = window.innerWidth <= 480
 }
-
-onMounted(() => {
-  verificarTela()
-  window.addEventListener('resize', verificarTela)
-})
 
 function proximo() {
   const passo = isMobile.value ? 1 : 2
@@ -69,8 +69,8 @@ function anterior() {
   )
 }
 
-
 const legendaExpandida = ref<Record<number, boolean>>({})
+
 function eventosVisiveis(ano: number, mes: number) {
   const lista = eventosDoMes(ano, mes)
   const chave = ano * 100 + mes
@@ -86,6 +86,7 @@ function toggleLegenda(ano: number, mes: number) {
   const chave = ano * 100 + mes
   legendaExpandida.value[chave] = !legendaExpandida.value[chave]
 }
+
 function corDoEvento(ev: Evento) {
   return PALETA_CORES[ev.id % PALETA_CORES.length]
 }
@@ -94,12 +95,16 @@ function eventosDoDia(data: Date | null): Evento[] {
   if (!data) return []
 
   return eventos.value.filter((ev) => {
+
     const inicio = criarDataLocal(ev.dataInicio)
     const fim = criarDataLocal(ev.dataFim)
+    const d = new Date(data)
+    d.setHours(0,0,0,0)
 
-    return data >= inicio && data <= fim
+    return d >= inicio && d <= fim
   })
 }
+
 function gradientePizza(eventosNoDia: Evento[]) {
   if (eventosNoDia.length === 0) return '#efeded'
 
@@ -120,9 +125,10 @@ function gradientePizza(eventosNoDia: Evento[]) {
 
 const PALETA_CORES = ['#57c083', '#5c95bb', '#e66070', '#f2a65a', '#9b6bcc']
 
-function criarDataLocal(data: string) {
-  const [ano, mes, dia] = data.split('-').map(Number)
-  return new Date(ano, mes - 1, dia)
+function criarDataLocal(dataStr: string) {
+  if(!dataStr) return new Date()
+  const [ano, mes, dia] = dataStr.split('-').map(Number)
+  return new Date(ano, mes - 1, dia, 0, 0, 0, 0)
 }
 
 function gerarDiasDoMes(ano: number, mes: number) {
@@ -141,7 +147,6 @@ function gerarDiasDoMes(ano: number, mes: number) {
 
   return dias
 }
-
 
 function eventosDoMes(ano: number, mes: number) {
   return eventos.value.filter((ev) => {
@@ -188,9 +193,11 @@ const meses = computed(() => {
   return lista
 })
 
-
 function formatarData(data: string) {
-  const [, m, d] = data.split('-')
+  if (!data) return '--/--'
+  const parts = data.split('-')
+  if (parts.length !== 3) return data 
+  const [, m, d] = parts
   return `${d}/${m}`
 }
 </script>
@@ -209,15 +216,13 @@ function formatarData(data: string) {
 
         <h3>{{ mes.nome }}</h3>
 
-        
         <button
-          v-if="!isMobile && index === 1 || isMobile"
+          v-if="(!isMobile && index === 1) || (isMobile && index === 0)"
           @click="proximo"
         >
           ›
         </button>
       </div>
-
 
       <div class="dias-semana">
         <span>D</span><span>S</span><span>T</span> <span>Q</span><span>Q</span><span>S</span
