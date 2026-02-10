@@ -28,20 +28,36 @@ defineProps({
         gap: 1rem;
         display: flex;
         margin: 0 auto;
-        max-width: 1400px;
+        max-width: 100vw;
         width: 100%;
-        min-height: 30rem; /* altura mínima */
-  height: auto;      /* deixa crescer */
-        padding: 4rem 2rem;
+        min-height: 30rem; 
+  height: auto;   
+        padding: 6rem 12rem;
         background-image: url('@/assets/fundo_apresentacao.png');
-        background-size:100% 100%;
+        background-size:100vw 100%;
         background-position: center;
-        background-repeat: no-repeat;
+        background-repeat: repeat-x;
         box-sizing: border-box;
         justify-content:center;
         align-items: flex-start;
 
     }
+    section::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  background-image: url('@/assets/fundo_apresentacao.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+    
 
     figure{
         width: 50%;

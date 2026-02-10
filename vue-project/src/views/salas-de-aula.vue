@@ -1,4 +1,5 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import Carrossel from '@/components/carrosel.vue'; 
 import CardInscricao from '@/components/CardInscricao.vue';
 import ModalLab from '@/components/modal.vue'; 
@@ -23,6 +24,14 @@ const salas = [
     categorias: ['Física'] 
   },
 ];
+=======
+import apresentacaopage from '@/components/apresentacaopage.vue';
+import objetivos from '@/components/objetivos.vue';
+import sala from '@/assets/sala.png';
+import Collaboration from '@/assets/Collaboration.png';
+import Knowledge from '@/assets/Knowledge Sharing.png';
+import Rocker from '@/assets/Rocket.png';
+>>>>>>> 0ef8329c67ae09d20d0c2399179552bb1fd5f467
 
 
 const showModal = ref(false)
@@ -37,7 +46,19 @@ function abrirModal(lab: any) {
 </script>
 
 <template>
+<<<<<<< HEAD
    <section id="laboratorios" class="laboratorios-section">
+=======
+    <apresentacaopage :url="sala" descricao="As salas de aula do IFRN constituem o principal espaço de ensino e aprendizagem, onde ocorre a construção do conhecimento por meio da interação entre estudantes e professores.
+
+     Esses ambientes favorecem o desenvolvimento do pensamento crítico, a troca de experiências e a formação acadêmica e profissional dos alunos, contribuindo diretamente para a missão educacional da instituição." />
+  
+  <objetivos :titulos="['Convivência', 'Conhecimento', 'Desenvolvimento']" :descricoes="['Elas estimulam o diálogo entre estudantes e professores, promovendo participação ativa, colaboração e pensamento crítico.', 'As salas de aula do IFRN CNAT são espaços centrais para a construção do conhecimento, favorecendo o ensino, a troca de ideias e o desenvolvimento acadêmico.', 'Nesse ambiente, ocorre a formação intelectual, ética e profissional dos alunos, preparando-os para a vida acadêmica e para o mercado de trabalho.']" :urls="[Collaboration, Knowledge, Rocker]"/>
+
+ 
+
+  <section id="laboratorios" class="laboratorios-section">
+>>>>>>> 0ef8329c67ae09d20d0c2399179552bb1fd5f467
     <div class="content-wrapper">
       <h3>Salas de Aula</h3>
      <Carrossel 
