@@ -3,9 +3,12 @@ import Carrossel from '@/components/carrosel.vue';
 import CardInscricao from '@/components/CardInscricao.vue';
 import ModalLab from '@/components/modal.vue'; 
 import { ref } from 'vue';
-import apr_quadra from '@/assets/apr_quadra.png';
+import apr_quadra from '@/assets/images/apr_quadra.png';
 import apresentacaopage from '@/components/apresentacaopage.vue';
-
+import objetivos from '@/components/objetivos.vue';
+import Basketball from '@/assets/images/Basketball.png';
+import Heart from '@/assets/images/Heart Health.png';
+import People from '@/assets/images/People Working Together.png';
 const quadras = [
   {
     titulo: 'Quadra 01',

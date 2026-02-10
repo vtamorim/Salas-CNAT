@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import apresentacaopage from '@/components/apresentacaopage.vue';
-import apr_biblioteca from '@/assets/apr_biblioteca.png';
+import apr_biblioteca from '@/assets/images/apr_biblioteca.png';
 import objetivos from '@/components/objetivos.vue';
-import Reading from '@/assets/Reading.png';
-import educacao from '@/assets/educacao.png';
-import aprender from '@/assets/aprender.png';
+import Reading from '@/assets/images/Reading.png';
+import educacao from '@/assets/images/educacao.png';
+import aprender from '@/assets/images/aprender.png';
 import Carrossel from '@/components/carrosel.vue';
 import ModalLab from '@/components/modal.vue';
 import CardInscricao from '@/components/CardInscricao.vue';

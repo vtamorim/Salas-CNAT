@@ -5,7 +5,7 @@
     </div>
       <div class="carousel-overlay">
         <h2>Agendar Salas CNAT</h2>
-        <p>Agende locais no IFRN pra fazer o L E várias outras coisas legais eu acho</p>
+        <p>Agende e gerencie salas do IFRN CNAT com praticidade e organização.</p>
       </div>
       
 
@@ -27,10 +27,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import img1 from '@/assets/sala_aula.png'
-import img2 from '@/assets/quadra.png'
-import img3 from '@/assets/biblio.png'
-import img4 from '@/assets/laboratorio.png'
+import img1 from '@/assets/images/sala_aula.png'
+import img2 from '@/assets/images/quadra.png'
+import img3 from '@/assets/images/biblio.png'
+import img4 from '@/assets/images/laboratorio.png'
 const props = defineProps({
   currentPage: { type: String, default: null }
 })

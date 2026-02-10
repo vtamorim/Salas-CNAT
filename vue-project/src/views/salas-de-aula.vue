@@ -5,10 +5,10 @@ import ModalLab from '@/components/modal.vue';
 import { ref } from 'vue';
 import apresentacaopage from '@/components/apresentacaopage.vue';
 import objetivos from '@/components/objetivos.vue';
-import sala from '@/assets/sala.png';
-import Collaboration from '@/assets/Collaboration.png';
-import Knowledge from '@/assets/Knowledge Sharing.png';
-import Rocker from '@/assets/Rocket.png';
+import sala from '@/assets/images/sala.png';
+import Collaboration from '@/assets/images/Collaboration.png';
+import Knowledge from '@/assets/images/Knowledge Sharing.png';
+import Rocker from '@/assets/images/Rocket.png';
 const salas = [
   {
     titulo: 'Laboratório de Informática',

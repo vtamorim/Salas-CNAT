@@ -4,10 +4,10 @@ import apresentacaopage from '@/components/apresentacaopage.vue';
 import objetivos from '@/components/objetivos.vue';
 import Carrossel from '@/components/carrosel.vue'; 
 import CardInscricao from '@/components/CardInscricao.vue';
-import apr_laboratorio from '@/assets/apr_laboratorio.png';
-import Experiment from '@/assets/Experiment.png';
-import Detective from '@/assets/Detective.png';
-import Training from '@/assets/Training.png';
+import apr_laboratorio from '@/assets/images/apr_laboratorio.png';
+import Experiment from '@/assets/images/Experiment.png';
+import Detective from '@/assets/images/Detective.png';
+import Training from '@/assets/images/Training.png';
 import ModalLab from '@/components/modal.vue'; 
 
 const laboratorios = [
