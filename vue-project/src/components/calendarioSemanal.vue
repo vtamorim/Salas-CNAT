@@ -6,7 +6,7 @@ import iconLista from '@/assets/images/iconLista.png'
 import iconCalendario from '@/assets/images/iconCalendario.png'
 import iconLocal from '@/assets/images/iconLocal.png'
 import iconHorario from '@/assets/images/iconHorario.png'
-
+import { onMounted } from 'vue'
 
 type ModoVisualizacao = 'hoje' | 'semana'
 type TipoVisualizacao = 'calendario' | 'lista'
