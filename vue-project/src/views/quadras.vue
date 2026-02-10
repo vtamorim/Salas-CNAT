@@ -1,15 +1,66 @@
 <script setup lang="ts">
+import Carrossel from '@/components/carrosel.vue';
+import CardInscricao from '@/components/CardInscricao.vue';
+import ModalLab from '@/components/modal.vue'; 
+import { ref } from 'vue';
+
+const quadras = [
+  {
+    titulo: 'Quadra 01',
+    local: 'IFRN CNAT - Área Esportiva',
+    descricao: 'Quadra coberta poliesportiva, ideal para prática de futsal e handebol durante o dia.',
+    categorias: ['Esportes']
+  },
+  {
+    titulo: 'Quadra 02',
+    local: 'IFRN CNAT - Área Esportiva',
+    descricao: 'Quadra coberta com tabelas de basquete e marcações oficiais para vôlei.',
+    categorias: ['Esportes']
+  },
+    {
+    titulo: 'Quadra 03',
+    local: 'IFRN CNAT - Área Esportiva',
+    descricao: 'Quadra coberta com tabelas de basquete e marcações oficiais para vôlei.',
+    categorias: ['Esportes']
+  },
+  {
+    titulo: 'Ginásio Poliesportivo',
+    local: 'IFRN CNAT - Área Esportiva',
+    descricao: 'Ginásio coberto com arquibancada, vestiários e iluminação profissional para jogos e eventos.',
+    categorias: ['Esportes'] 
+  },
+];
+
+const showModal = ref(false)
+const selectedLab = ref<any>(null) 
 
 
+function abrirModal(lab: any) {
+  console.log('Abrindo modal para:', lab.titulo); 
+  selectedLab.value = lab
+  showModal.value = true
+}
 </script>
 
 <template>
 
-
  <section id="laboratorios" class="laboratorios-section">
     <div class="content-wrapper">
       <h3>Quadras</h3>
+     <Carrossel 
+        :eventos="quadras" 
+        :component="CardInscricao" 
+        variant="inscricao" 
+        @select="abrirModal" 
+      />
 
+      <Teleport to="body">
+        <ModalLab 
+          :show="showModal" 
+          :content="selectedLab" 
+          @close="showModal = false" 
+        />
+      </Teleport>
     </div>
   </section>
 </template>

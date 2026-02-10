@@ -1,19 +1,23 @@
 // src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
-// Adicione 'type' se quiser ser bem específico, mas não é obrigatório se renomear p/ .ts
 import type { RouteRecordRaw } from 'vue-router' 
-
 import HomeView from '../views/home.vue'
-import LaboratoriosView from '../views/laboratorios.vue' // Lembre-se da letra maiúscula!
+import LaboratoriosView from '../views/laboratorios.vue'
 import BibliotecaView from '../views/biblioteca.vue'
 import QuadrasView from '../views/quadras.vue'
 import SalasView from '../views/salas-de-aula.vue'
+import ReservaView from '../views/reserva.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+    {
+    path: '/reserva',
+    name: 'reserva',
+    component: ReservaView
   },
   {
     path: '/laboratorios',

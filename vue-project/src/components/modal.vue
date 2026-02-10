@@ -1,439 +1,365 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import modalBanner from '@/assets/modalbanner.png'
+import { useRouter } from 'vue-router'
 
-interface Evento {
-  titulo: string
-  local: string
-  dataInscricaoInicio?: string
-  dataInscricaoFim?: string
-  dataEventoInicio: string
-  dataEventoFim: string
-  categorias: string[]
-  descricao: string
-  linkInformacao?: string
-  linkInscricao?: string
-  organizadores?: string[]
-  imagem: string
-}
+// Definição das Props
 const props = defineProps<{
-  eventoSelecionado: Evento
+  show: boolean
+  content: any 
 }>()
 
-const contatosLimitados = computed(() => {
-  return props.eventoSelecionado.organizadores?.slice(0, 4)
-})
-
-const separarDataHora = (dataISO?: string) => {
-  if (!dataISO) return { data: '--/--/--', hora: '--:--' }
-
-  const dataObj = new Date(dataISO);
-  const dataFormatada = dataObj.toLocaleDateString('pt-BR');
-  const horaFormatada = dataObj.toLocaleTimeString('pt-BR', {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
-  return { data: dataFormatada, hora: horaFormatada };
-}
 const emit = defineEmits(['close'])
+const router = useRouter()
 
-const modo = ref('info')
+const close = () => {
+  emit('close')
+}
 
-// -- Navegação entre modos desativada por enquanto --
-// function next() {
-//   modo.value = modo.value === 'info' ? 'imagem' : 'info'
-// }
+const irParaReserva = () => {
+  emit('close')
+  router.push('/reserva')
+}
 
-// function prev() {
-//   modo.value = modo.value === 'info' ? 'imagem' : 'info'
-// }
+const horariosMock = [
+  { turno: 'Manhã', horas: ['08:00', '09:00', '10:00', '11:00'] },
+  { turno: 'Tarde', horas: ['14:00', '15:00', '16:00'] },
+  { turno: 'Noite', horas: ['19:00', '20:00'] }
+]
 </script>
 
 <template>
-  <div class="modal-overlay">
-    <div class="story-wrapper">
-      <!-- <div class="progress-wrapper">
-        <div class="bar active"></div>
-      </div> -->
-      <div class="story-card">
-        <button class="close-btn" @click="emit('close')">✕</button>
+  <Transition name="fade">
+    <div v-if="show" class="modal-overlay" @click.self="close">
+      
+      <div class="modal-container">
+        
+        <button class="btn-close" @click="close" aria-label="Fechar">
+          &times;
+        </button>
 
-        <div class="left">
-          <h1>{{ eventoSelecionado.titulo }}</h1>
-        <div class="local-row">
-          <div class="local">
-            <img src="@/assets/localModal.png" alt="">
-            {{ eventoSelecionado.local }}
+        <div class="modal-header">
+          <span class="tag-categoria">{{ props.content?.categorias?.[0] || 'Laboratório' }}</span>
+          <h2>{{ props.content?.titulo }}</h2>
+          
+          <div class="local-wrapper">
+            <span class="label-local">LOCAL</span>
+            <span class="texto-local">{{ props.content?.local }}</span>
           </div>
-
         </div>
 
+        <div class="modal-body">
+          
+          <div class="section">
+            <h3>Sobre</h3>
+            <p class="descricao">
+              {{ props.content?.descricao }}
+            </p>
+          </div>
 
-          <div class="datas-list">
-            <span>{{ separarDataHora(eventoSelecionado.dataEventoInicio).data }} até {{ separarDataHora(eventoSelecionado.dataEventoFim).data }}</span>
-            <div class="horario">
-                {{ separarDataHora(eventoSelecionado.dataEventoInicio).hora }} – {{ separarDataHora(eventoSelecionado.dataEventoFim).hora }}
+          <div class="section">
+            <h3>Equipamentos</h3>
+            <div class="equipamentos-lista">
+              <span class="equip-tag">Computadores</span>
+              <span class="equip-tag">Climatizado</span>
+              <span class="equip-tag">Projetor</span>
+              <span class="equip-tag">Rede Wi-Fi</span>
             </div>
           </div>
 
-          <p class="descricao">{{ eventoSelecionado.descricao }}</p>
+          <div class="divider"></div>
 
-          <div class="contatos-box">
-            <h2>Organizadores</h2>
-            <div class="contatos-grid" v-if="contatosLimitados && contatosLimitados.length > 0">
-              <div
-                class="contato-item"
-                v-for="(c, i) in contatosLimitados"
-                :key="i"
-                :class="{ single: contatosLimitados.length === 1 }"
-              >
-                <img src="@/assets/contato.png" class="user-icon" />
-                <span>{{ c }}</span>
+          <div class="section">
+            <h3>Disponibilidade (Hoje)</h3>
+            <div class="horarios-container">
+              <div v-for="periodo in horariosMock" :key="periodo.turno" class="turno-row">
+                <span class="turno-nome">{{ periodo.turno }}</span>
+                <div class="lista-horas">
+                  <span v-for="hora in periodo.horas" :key="hora" class="hora-chip">
+                    {{ hora }}
+                  </span>
+                </div>
               </div>
             </div>
-
-            <div v-else class="sem-contatos">
-              Não há contatos cadastrados
-            </div>
-
-          </div>
-
-          <div class="footer">
-            <a :href="eventoSelecionado.linkInformacao" class="mais-info" target="_blank">mais informações</a>
-            <!-- <div class="categoria-box">
-              <strong v-for="(p, i) in evento.palestras" :key="i">{{ p }}</strong>
-            </div> -->
           </div>
         </div>
 
-        <div class="right">
-          <img :src="eventoSelecionado.imagem" class="side-image" />
+        <div class="modal-footer">
+          <div class="contato-info">
+            <span>Dúvidas? Entre em contato com a Coordenação</span>
+          </div>
+          
+          <button class="btn-reservar" @click="irParaReserva">
+            Reservar Horário
+          </button>
         </div>
+
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <style scoped>
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active .modal-container {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-enter-from .modal-container,
+.fade-leave-to .modal-container {
+  transform: translateY(10px) scale(0.98);
+}
+
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4); 
+  backdrop-filter: blur(5px);
+  z-index: 9999;
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000;
-}
-
-.close-btn {
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #333;
-  z-index: 20;
-
-  display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 1.5rem;
 }
 
-.close-btn:hover {
-  background: #f0f0f0;
-}
-
-.progress-wrapper {
-  position: absolute;
-  top: 20px;
-  left: 135px;
-  display: flex;
-  gap: 8px;
-}
-
-.bar {
-  width: 150px;
-  height: 7px;
-  background: #e5e5e5;
-  border-radius: 999px;
-}
-
-.bar.active {
-  background: linear-gradient(90deg, #5ea4ef, #6fe0a5);
-}
-.story-card {
-  width: 850px;
-  position: relative;
-  min-height: 600px; 
-  max-height: 85vh;  
-  height: 650px;
+.modal-container {
   background: #fff;
-  border-radius: 28px;
-  overflow: hidden;
-  display: flex;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-}
-
-
-.left {
-  flex: 1;
-  padding: 40px 30px;
+  width: 100%;
+  max-width: 500px; 
+  max-height: 85vh;
+  border-radius: 12px; 
   display: flex;
   flex-direction: column;
-  gap: 20px;
-
-  overflow-y: auto; 
-}
-
-h1 {
-  font-size: 36px;
-  margin-top: 5px;
-  margin-left: 90px;
-  margin-bottom: 5px;
-}
-h2 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #1d5b3d;
-}
-.right {
-  flex: 1;
   position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
   overflow: hidden;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 }
 
-.side-image {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.datas-list {
-  background: #dff5e4;
-  display: flex;
-  padding: 16px;
-  border-radius: 16px;
-  height: auto;
-}
-.datas-list span {
-  font-size: 14px;
-  margin-left: 20px;
-  color: #559e67;
-}
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.mais-info {
-  font-size: 14px;
-  color: #4b4b4b;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.categoria-box {
-  display: flex;
-  justify-content: flex-end;
-  width: 50%;
-}
-
-.categoria-box strong {
-  font-size: 15px;
-  margin-left: auto;
-}
-
-
-.title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.arrow-btn {
-  background: none;
+.btn-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
   border: none;
   font-size: 28px;
+  color: white; 
   cursor: pointer;
-  transition: transform 0.2s ease;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.btn-close:hover {
+  opacity: 1;
 }
 
-.arrow-btn:hover {
-  transform: scale(1.35);
+.modal-header {
+  background-color: #3A7259; 
+  color: white;
+  padding: 40px 32px 32px 32px;
 }
 
-.local-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-left: 70px;
+.tag-categoria {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.8;
+  margin-bottom: 8px;
 }
 
-.local {
-  font-size: 18px;
-  color: #333;
-  display: flex;
-  align-items: center;
+.modal-header h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
 }
 
-.local img {
-  margin-right: 6px;
-}
-
-.horario {
-  font-size: 14px;
-
-  color:#559e67;
-  padding-left: 30px;
-
-}
-
-
-.descricao {
-  color: #6e6e6e;
-  font-size: 14px;
-  width: 90%;
-  margin-left: 15px;
-}
-
-.contatos-box {
-  background: #e4f3ea;
-  padding: 18px;
-  border-radius: 16px;
-  width: 100%;
-}
-
-.contatos-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  font-size: 12px;
-}
-
-.contato-item {
+.local-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
-  padding: 10px;
-  border-radius: 10px;
+  font-size: 0.85rem;
 }
-.sem-contatos{
-  font-size: 13px;
-  color: #6e6e6e;
+
+.label-local {
+  background: rgba(255,255,255,0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
-.user-icon {
-  width: 20px;
-  opacity: 0.7;
+
+.texto-local {
+  font-weight: 500;
+  opacity: 0.95;
 }
-@media (max-width: 768px) {
-  .story-card {
-    width: 100vw;
-    min-height: 100vh;
-    height: auto;              
-    max-height: none;
-    border-radius: 0;
-    flex-direction: column;
-    overflow: visible;         
-  }
 
-  .left {
-    padding: 16px;
-    gap: 14px;
-    flex: none;                
-  }
 
-  .right {
-    width: 100%;
-    height: 220px;             
-    flex: none;
-  }
+.modal-body {
+  padding: 32px;
+  overflow-y: auto;
+  flex: 1;
+}
 
-  .side-image {
-    width: 100%;
+.section {
+  margin-bottom: 28px;
+}
+
+.section h3 {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.descricao {
+  color: #333;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+
+.equipamentos-lista {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.equip-tag {
+  background: #f4f4f4;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.equip-tag:hover {
+  border-color: #ddd;
+}
+
+.divider {
+  border-top: 1px solid #eee;
+  margin: 10px 0 30px 0;
+}
+
+
+.horarios-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.turno-row {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.turno-nome {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.lista-horas {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hora-chip {
+  border: 1px solid #e0e0e0;
+  color: #333;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: default;
+  transition: all 0.2s;
+}
+
+.hora-chip:hover {
+  border-color: #3A7259;
+  color: #3A7259;
+}
+
+
+.modal-footer {
+  padding: 24px 32px 32px 32px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid #f5f5f5;
+}
+
+.contato-info {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.btn-reservar {
+  width: 100%;
+  padding: 16px;
+  background-color: #3A7259;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-reservar:hover {
+  background-color: #2e5c47;
+}
+
+.btn-reservar:active {
+  transform: scale(0.99);
+}
+
+
+@media (max-width: 600px) {
+  .modal-container {
     height: 100%;
-    object-fit: cover;
-    display: block;
+    max-height: 100%;
+    border-radius: 0;
+    max-width: 100%;
   }
-
-  h1 {
-    font-size: 28px;
-    margin-left: 0;
-    text-align: center;
+  
+  .modal-header {
+    padding: 30px 24px 24px 24px;
   }
-
-  .local-row {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  .datas-list {
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px;
-    align-items: center;
-  }
-  .horario {
-    padding-left: 0;
-    font-size: 13px;
-  }
-
-   h1 {
-    margin-left: 0;
-    margin-bottom: 8px;
-  }
-
-  .descricao {
-    margin: 0;
-    margin-bottom: 8px;
-  }
-
-
-  .footer {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-    margin-bottom: 12px;
-  }
-
-  .categoria-box {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .progress-wrapper {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-   .contatos-box {
-    padding: 14px;
-  }
-
-  .contatos-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .contato-item {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-  .user-icon {
-    width: 16px;
+  
+  .modal-body {
+    padding: 24px;
   }
 }
-
 </style>

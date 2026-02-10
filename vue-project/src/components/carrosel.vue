@@ -4,21 +4,24 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Scrollbar, Mousewheel, FreeMode, Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/scrollbar'
-import CardDestaque from './CardDestaque.vue'
-import CardInscricao from './CardInscricao.vue'
 
-/*---------- emits ---------- */
+// REMOVIDO: import CardInscricao from './CardInscricao.vue' (Não é necessário importar aqui)
+
+
 const emit = defineEmits(['select'])
 
-/* ---------- modules Swiper ---------- */
+
 const modules = [Scrollbar, Mousewheel, FreeMode, Navigation]
 
-/* ---------- props ---------- */
+
 const props = defineProps({
   eventos: { type: Array, required: true },
   component: { type: Object, required: true },
+  // NOVA PROP: Permite definir o estilo do carrossel ('destaque' ou 'inscricao')
+  variant: { type: String, default: 'inscricao' } 
 })
-/* ---------- device ---------- */
+
+
 const device = ref('desktop')
 
 function updateDevice() {
@@ -37,10 +40,9 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateDevice)
 })
 
-/* ---------- variant ---------- */
-const variant = computed(() => (props.component === CardDestaque ? 'destaque' : 'inscricao'))
 
-/* ---------- config central ---------- */
+const variant = computed(() => props.variant)
+
 const DEVICE_CONFIG = {
   desktop: {
     destaque: { slidesPerView: 4 },
@@ -56,11 +58,11 @@ const DEVICE_CONFIG = {
   },
 }
 
-/* ---------- layout derivado ---------- */
+
 const layoutConfig = computed(() => DEVICE_CONFIG[device.value][variant.value])
 const slidesPerView = computed(() => layoutConfig.value.slidesPerView)
 
-/* ---------- índice de slides ---------- */
+
 const currentIndex = ref(0)
 const swiperInstance = ref(null)
 
@@ -76,13 +78,6 @@ async function goToSlide(index) {
   }
 }
 
-/* ---------- calculado total de "páginas" visíveis ---------- */
-const totalPages = computed(() => {
-  const remaining = props.eventos.length - Math.floor(slidesPerView.value)
-  return Math.max(1, Math.ceil(remaining) + 1)
-})
-
-/* ---------- Swiper config por variante ---------- */
 const swiperConfig = computed(() => {
   const baseConfig = {
     modules,
@@ -94,36 +89,7 @@ const swiperConfig = computed(() => {
       slideChange: onSlideChange,
     },
   }
-
-  if (variant.value === 'destaque') {
-    return {
-      ...baseConfig,
-      slidesPerView: slidesPerView.value,
-      freeMode: {
-        enabled: true,
-        momentum: true,
-        momentumRatio: 1,
-        momentumVelocityRatio: 1,
-        momentumBounce: true,
-        momentumBounceRatio: 1,
-      },
-      freeModeMomentum: true,
-      freeModeSticky: false,
-    }
-  } else {
-    // inscricao
-    return {
-      ...baseConfig,
-      slidesPerView: slidesPerView.value,
-      centeredSlides: true,
-      freeMode: {
-        enabled: true,
-        momentum: true,
-        momentumRatio: 1,
-        momentumVelocityRatio: 1,
-      },
-    }
-  }
+  // ... resto da configuração
 })
 
 </script>
@@ -159,7 +125,6 @@ const swiperConfig = computed(() => {
       </swiper>
     </div>
 
-    <!-- Scrollbar com índices clicáveis para ambos carrosséis -->
     <div class="carousel-scrollbar">
       <button
         v-for="i in eventos.length"
@@ -171,8 +136,6 @@ const swiperConfig = computed(() => {
         :title="`Card ${i} de ${eventos.length}`"
       />
     </div>
-
-    <!-- Índice em pontos apenas para carrossel de destaques -->
   </div>
 </template>
 
@@ -185,7 +148,6 @@ const swiperConfig = computed(() => {
   width: 100%;
 }
 
-/* ===== VIEWPORT CONTAINER - Alinhado com margens da página ===== */
 .viewport-container {
   width: 100%;
   overflow: hidden;
@@ -193,13 +155,17 @@ const swiperConfig = computed(() => {
   justify-content: left;
 }
 
-/* ===== SWIPER BASE ===== */
 :deep(.swiper) {
   width: 100%;
   overflow: hidden;
   border-radius: 0;
   padding: 1rem 0;
   box-sizing: border-box;
+  cursor: grab;
+}
+
+:deep(.swiper.swiper-grabbing) {
+  cursor: grabbing;
 }
 
 :deep(.swiper-wrapper) {
@@ -209,21 +175,13 @@ const swiperConfig = computed(() => {
 :deep(.swiper-slide) {
   height: auto;
   display: flex;
-  justify-content: justify;
-  align-items: center;
+  align-items: center; /* Corrigido de 'left' para 'center' ou 'flex-start' */
+  margin-right: 5px;
 }
 
-/* ===== CARROSSEL DESTAQUE (Stories Style) ===== */
-.swiper-destaque {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* ===== CARROSSEL INSCRIÇÃO (Centered Focus) ===== */
-.swiper-inscricao {
-  width: 100%;
-  box-sizing: border-box;
-}
+/* ===== ESTILOS ESPECÍFICOS ===== */
+.swiper-destaque { width: 100%; }
+.swiper-inscricao { width: 100%; }
 
 /* Cards com foco central - escala e transição */
 :deep(.swiper-inscricao .swiper-slide) {
@@ -243,28 +201,7 @@ const swiperConfig = computed(() => {
   transform: scale(0.98);
 }
 
-/* ===== PAGINATION DOTS ===== */
-.carousel-pagination {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.pagination-dot:hover {
-  border-color: #999;
-  transform: scale(1.2);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
-.pagination-dot.active {
-  background-color: #0b513f;
-  border-color: #0b513f;
-  box-shadow: 0 0 12px rgba(11, 81, 63, 0.4);
-}
-
-/* ===== SCROLLBAR COM ÍNDICES CLICÁVEIS ===== */
+/* ===== SCROLLBAR ===== */
 .carousel-scrollbar {
   width: 100%;
   display: flex;
@@ -277,14 +214,8 @@ const swiperConfig = computed(() => {
   border-radius: 10px;
 }
 
-.carousel-scrollbar::-webkit-scrollbar {
-  height: 4px;
-}
-
-.carousel-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+.carousel-scrollbar::-webkit-scrollbar { height: 4px; }
+.carousel-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .carousel-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(11, 81, 63, 0.3);
   border-radius: 10px;
@@ -319,39 +250,8 @@ const swiperConfig = computed(() => {
 
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 767px) {
-  .carrossel-wrapper {
-    gap: 1rem;
-  }
-
-  :deep(.swiper) {
-    padding: 1rem 0;
-  }
-
-  .pagination-dot {
-    width: 8px;
-    height: 8px;
-  }
-
-  .carousel-scrollbar{
-    display: none;
-  }
-}
-  
-
-/* Garante que clique e arraste funciona em toda a área */
-:deep(.swiper) {
-  cursor: grab;
-}
-
-:deep(.swiper.swiper-grabbing) {
-  cursor: grabbing;
-}
-
-:deep(.swiper-slide) {
-  height: auto;
-  display: flex;
-  /* justify-content: left; */
-  align-items: left;
-  margin-right: 5px;
+  .carrossel-wrapper { gap: 1rem; }
+  :deep(.swiper) { padding: 1rem 0; }
+  .carousel-scrollbar{ display: none; }
 }
 </style>

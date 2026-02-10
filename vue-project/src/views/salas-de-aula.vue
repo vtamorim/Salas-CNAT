@@ -1,15 +1,59 @@
 <script setup lang="ts">
+import Carrossel from '@/components/carrosel.vue'; 
+import CardInscricao from '@/components/CardInscricao.vue';
+import ModalLab from '@/components/modal.vue'; 
+import { ref } from 'vue';
+const salas = [
+  {
+    titulo: 'Laboratório de Informática',
+    local: 'Bloco A - Sala 102',
+    descricao: 'Espaço equipado com computadores de alto desempenho para aulas de programação e desenvolvimento de sistemas.',
+    categorias: ['Tecnologia']
+  },
+  {
+    titulo: 'Laboratório de Química',
+    local: 'Bloco B - Sala 204',
+    descricao: 'Laboratório completo com bancadas, vidrarias e reagentes para experimentos de química geral e analítica.',
+    categorias: ['Química']
+  },
+  {
+    titulo: 'Laboratório de Física',
+    local: 'Bloco C - Sala 101',
+    descricao: 'Ambiente destinado ao estudo de mecânica, óptica e eletricidade com equipamentos de medição precisos.',
+    categorias: ['Física'] 
+  },
+];
 
-import Header from '@/components/header.vue';
-import Footer from '@/components/footer.vue';
 
+const showModal = ref(false)
+const selectedLab = ref<any>(null) 
+
+
+function abrirModal(lab: any) {
+  console.log('Abrindo modal para:', lab.titulo); 
+  selectedLab.value = lab
+  showModal.value = true
+}
 </script>
 
 <template>
-  <section id="laboratorios" class="laboratorios-section">
+   <section id="laboratorios" class="laboratorios-section">
     <div class="content-wrapper">
-      <h3>Salas</h3>
+      <h3>Salas de Aula</h3>
+     <Carrossel 
+        :eventos="salas" 
+        :component="CardInscricao" 
+        variant="inscricao" 
+        @select="abrirModal" 
+      />
 
+      <Teleport to="body">
+        <ModalLab 
+          :show="showModal" 
+          :content="selectedLab" 
+          @close="showModal = false" 
+        />
+      </Teleport>
     </div>
   </section>
 </template>

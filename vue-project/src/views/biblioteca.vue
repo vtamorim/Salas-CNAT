@@ -2,11 +2,57 @@
 import apresentacaopage from '@/components/apresentacaopage.vue';
 import apr_biblioteca from '@/assets/apr_biblioteca.png';
 import objetivos from '@/components/objetivos.vue';
-
 import Reading from '@/assets/Reading.png';
 import educacao from '@/assets/educacao.png';
 import aprender from '@/assets/aprender.png';
+import Carrossel from '@/components/carrosel.vue';
+import ModalLab from '@/components/modal.vue';
+import CardInscricao from '@/components/CardInscricao.vue';
+import { ref } from 'vue';
 
+const bib = [
+  {
+    titulo: 'Sala 01',
+    local: 'Biblioteca -  IFRN CNAT',
+    descricao: 'Sala de Estudos.',
+    categorias: ['Aprendizado']
+  },
+  {
+    titulo: 'Sala 02',
+    local: 'Biblioteca -  IFRN CNAT',
+    descricao: 'Sala de Estudos.',
+    categorias: ['Aprendizado']
+  },
+  {
+    titulo: 'Sala 03',
+    local: 'Biblioteca -  IFRN CNAT',
+    descricao: 'Sala de Estudos.',
+    categorias: ['Aprendizado']
+  },
+    {
+    titulo: 'Sala 04',
+    local: 'Biblioteca -  IFRN CNAT',
+    descricao: 'Sala de Estudos.',
+    categorias: ['Aprendizado']
+  },
+    {
+    titulo: 'Sala 05',
+    local: 'Biblioteca -  IFRN CNAT',
+    descricao: 'Sala de Estudos.',
+    categorias: ['Aprendizado']
+  },
+];
+
+
+const showModal = ref(false)
+const selectedLab = ref<any>(null) 
+
+
+function abrirModal(lab: any) {
+  console.log('Abrindo modal para:', lab.titulo); 
+  selectedLab.value = lab
+  showModal.value = true
+}
 </script>
 
 <template>
@@ -19,8 +65,21 @@ import aprender from '@/assets/aprender.png';
 
   <section id="laboratorios" class="laboratorios-section">
     <div class="content-wrapper">
-      <h3>Bibliotecas</h3>
+      <h3>Biblioteca</h3>
+      <Carrossel 
+        :eventos="bib" 
+        :component="CardInscricao" 
+        variant="inscricao" 
+        @select="abrirModal" 
+      />
 
+      <Teleport to="body">
+        <ModalLab 
+          :show="showModal" 
+          :content="selectedLab" 
+          @close="showModal = false" 
+        />
+      </Teleport>
     </div>
   </section>
 </template>
