@@ -46,5 +46,35 @@ defineProps({
 
 </script>
 <style scoped>
+section{
+  display:flex;
+  justify-content: center;
+  gap: 5rem;
+}
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  height: 400px;
+  gap: 50px;
+}
+figure{
+  margin: 0;
+  padding: 0;
+  background-color: #31BF81;
+  border-radius: 50%;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
 
 </style>
