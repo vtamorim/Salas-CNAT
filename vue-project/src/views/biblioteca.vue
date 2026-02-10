@@ -14,7 +14,7 @@ import aprender from '@/assets/aprender.png';
   
   Elas funcionam como centros de informação, conhecimento e cultura dentro do Instituto Federal do Rio Grande do Norte (IFRN), oferecendo acervo físico e acesso a recursos digitais para o desenvolvimento acadêmico.." />
   
-  <objetivos :titulos="['Prática', 'Experiência', 'Preparação']" :descricoes="['O laboratório possibilita que os alunos realizem experimentos e atividades práticas, facilitando a compreensão dos conteúdos teóricos trabalhados em sala de aula.', 'Por meio de experiências, os estudantes desenvolvem o pensamento científico, aprendendo a observar, formular hipóteses, testar ideias e analisar resultados.', 'O uso do laboratório contribui para a formação acadêmica e profissional dos alunos, promovendo contato com equipamentos, normas de segurança e trabalho em equipe.']" :urls="[aprender, educacao, Reading]"/>
+  <objetivos :titulos="['Conhecimento', 'Aprendizado', 'Pesquisa']" :descricoes="['A biblioteca do IFRN CNAT oferece um amplo acervo físico e digital, apoiando o aprendizado, a pesquisa e o desenvolvimento acadêmico dos estudantes e servidores.', 'Ela funciona como suporte essencial às atividades de ensino, fornecendo materiais atualizados, espaços de estudo e auxílio à pesquisa em diversas áreas do conhecimento.', 'Além do estudo técnico, a biblioteca incentiva a leitura crítica, a autonomia intelectual e a formação cidadã da comunidade acadêmica.']" :urls="[aprender, educacao, Reading]"/>
 
 
   <section id="laboratorios" class="laboratorios-section">

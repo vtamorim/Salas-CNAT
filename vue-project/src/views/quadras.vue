@@ -1,10 +1,24 @@
 <script setup lang="ts">
+import apresentacaopage from '@/components/apresentacaopage.vue';
+import objetivos from '@/components/objetivos.vue';
+import apr_quadra from '@/assets/apr_quadra.png';
+import Basketball from '@/assets/Basketball.png';
+import Heart from '@/assets/Heart Health.png';
+import People from '@/assets/People Working Together.png';
 
 
 </script>
 
 <template>
+  <apresentacaopage :url="apr_quadra" descricao="  As quadras do IFRN CNAT são espaços destinados à prática de atividades esportivas, promovendo o desenvolvimento físico e mental dos estudantes.
 
+    Elas oferecem um ambiente propício para a realização de atividades esportivas, contribuindo para o bem-estar dos alunos e servidores.  
+
+   A Coordenação de Espaços Esportivos (Cesport) é responsável pela gestão e coordenação das quadras, garantindo que estejam em conformidade com as normas e regulamentos de segurança e funcionamento." />
+  
+  <objetivos :titulos="['Esporte', 'Convivência', 'Saúde']" :descricoes="['As quadras do IFRN CNAT incentivam a prática esportiva, contribuindo para o desenvolvimento físico, a disciplina e o trabalho em equipe dos estudantes.', 'A utilização das quadras contribui para a qualidade de vida, o bem-estar físico e mental, além de estimular hábitos saudáveis na comunidade acadêmica.', 'Esses espaços promovem a integração entre alunos e servidores, fortalecendo a socialização, o respeito e a convivência no ambiente escolar.']" :urls="[Basketball, Heart, People]"/>
+
+ 
 
  <section id="laboratorios" class="laboratorios-section">
     <div class="content-wrapper">
