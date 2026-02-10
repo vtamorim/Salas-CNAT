@@ -33,7 +33,7 @@ defineProps({
         min-height: 30rem; 
   height: auto;   
         padding: 6rem 12rem;
-        background-image: url('@/assets/fundo_apresentacao.png');
+        background-image: url('@/assets/images/fundo_apresentacao.png');
         background-size:100vw 100%;
         background-position: center;
         background-repeat: repeat-x;

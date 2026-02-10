@@ -1,9 +1,8 @@
 <template>
     <header>
         <div class="header-inner">
-            <a href="" class="logo-link">
-            <img :src="Logotipo" alt="Logo" />
-            </a>
+            <router-link to="/" class="logo-link">
+                <img :src="Logotipo" alt="Logotipo do Salas CNAT" class="logo"></router-link>
    
             <button class="hamburger" :class="{ active: menuAberto }" @click="menuAberto = !menuAberto" aria-label="Toggle menu">
                 <span></span>
@@ -36,7 +35,7 @@
 
 <script setup>
 import { ref} from 'vue';
-import Logotipo from '@/assets/logotipo.png'
+import Logotipo from '@/assets/images/logotipo.png'
 import carroselheader from '@/components/carroselheader.vue';
 const hashPage = ref('home');
 const menuAberto = ref(false);

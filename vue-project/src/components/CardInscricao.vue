@@ -14,24 +14,7 @@ interface Laboratorio {
   imagem?: string
 }
 
-const getPrimeiraCategoria = (categorias?: string[]) => {
-  return categorias?.[0] ?? 'Geral'
-}
 
-const getIconPath = (categoria: string) => {
-  const categoryMap: Record<string, string> = {
-    'Palestras': 'palestras.svg',
-    'Cultura': 'cultura.svg',
-    'Esporte': 'esporte.svg',
-    'Tecnologia': 'tecnologia.svg',
-    'Saúde': 'saude.svg',
-    'Química': 'quimica.svg', 
-    'Informática': 'tecnologia.svg'
-  }
-
-  const fileName = categoryMap[categoria] || 'default.svg'
-  return `/src/assets/images/icons/${fileName}`
-}
 </script>
 
 <template>
@@ -51,15 +34,7 @@ const getIconPath = (categoria: string) => {
       </p>
     </div>
 
-    <div class="cardfooter">
-      <p>{{ getPrimeiraCategoria(props.evento.categorias) }}</p>
-      <img 
-        v-if="props.evento.categorias"
-        :src="getIconPath(getPrimeiraCategoria(props.evento.categorias))" 
-        alt="Ícone" 
-        width="24px"
-      />
-    </div>
+
   </div>
 </template>
 

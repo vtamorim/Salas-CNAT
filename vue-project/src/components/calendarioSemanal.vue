@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import iconLista from '@/assets/iconLista.png'
-import iconCalendario from '@/assets/iconCalendario.png'
-import iconLocal from '@/assets/iconLocal.png'
-import iconHorario from '@/assets/iconHorario.png'
+import { ref, computed } from 'vue'
+
+
+import iconLista from '@/assets/images/iconLista.png'
+import iconCalendario from '@/assets/images/iconCalendario.png'
+import iconLocal from '@/assets/images/iconLocal.png'
+import iconHorario from '@/assets/images/iconHorario.png'
+
 
 type ModoVisualizacao = 'hoje' | 'semana'
 type TipoVisualizacao = 'calendario' | 'lista'

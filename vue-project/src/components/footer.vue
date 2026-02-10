@@ -1,10 +1,10 @@
 
 <script setup>
-import logoFooter from '@/assets/logotipo.png'
-import logoIfrn from '@/assets/ifrn.png'
-import XImg from '@/assets/x.png'
-import instagramImg from '@/assets/instagram.png'
-import youtubeImg from '@/assets/youtube.png'
+import logoFooter from '@/assets/images/logotipo.png'
+import logoIfrn from '@/assets/images/ifrn.png'
+import XImg from '@/assets/images/x.png'
+import instagramImg from '@/assets/images/instagram.png'
+import youtubeImg from '@/assets/images/youtube.png'
 </script>
 <template>
   <footer>
