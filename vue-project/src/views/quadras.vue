@@ -3,6 +3,8 @@ import Carrossel from '@/components/carrosel.vue';
 import CardInscricao from '@/components/CardInscricao.vue';
 import ModalLab from '@/components/modal.vue'; 
 import { ref } from 'vue';
+import apr_quadra from '@/assets/apr_quadra.png';
+import apresentacaopage from '@/components/apresentacaopage.vue';
 
 const quadras = [
   {

@@ -54,19 +54,7 @@ const horariosMock = [
               {{ props.content?.descricao }}
             </p>
           </div>
-
-          <div class="section">
-            <h3>Equipamentos</h3>
-            <div class="equipamentos-lista">
-              <span class="equip-tag">Computadores</span>
-              <span class="equip-tag">Climatizado</span>
-              <span class="equip-tag">Projetor</span>
-              <span class="equip-tag">Rede Wi-Fi</span>
-            </div>
-          </div>
-
           <div class="divider"></div>
-
           <div class="section">
             <h3>Disponibilidade (Hoje)</h3>
             <div class="horarios-container">
